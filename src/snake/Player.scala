@@ -51,6 +51,23 @@ class Player(val color: ColorF) {
 		tail.contains(pos)
 	}
 	
+	def move(): Boolean = {
+		if (timeBeforeMove < 0) {
+			tail.enqueue((pos._1, pos._2))
+			while (tail.size > tailLen) {
+				tail.dequeue()
+			}
+			
+			def wrapMod(x: Int, m: Int): Int = ((x % m) + m) % m
+			
+			pos = (wrapMod(pos._1 + direction._1, Game.TILES_W), wrapMod(pos._2 + direction._2, Game.TILES_H))
+			
+			timeBeforeMove += Player.timeBetweenMoves
+		}
+		
+		timeBeforeMove < 0
+	}
+	
 	def update(dt: Float): Unit = {
 		timeBeforeMove -= dt
 		
@@ -66,19 +83,6 @@ class Player(val color: ColorF) {
 		if (growDelay < 0) {
 			tailLen += 1
 			growDelay = Player.GROW_TIME
-		}
-		
-		while (timeBeforeMove < 0) {
-			tail.enqueue((pos._1, pos._2))
-			while (tail.size > tailLen) {
-				tail.dequeue()
-			}
-			
-			def wrapMod(x: Int, m: Int): Int = ((x % m) + m) % m
-			
-			pos = (wrapMod(pos._1 + direction._1, Game.TILES_W), wrapMod(pos._2 + direction._2, Game.TILES_H))
-			
-			timeBeforeMove += Player.timeBetweenMoves
 		}
 	}
 	

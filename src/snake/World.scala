@@ -85,7 +85,7 @@ class World(val width: Int, val height: Int) {
 		}
 		
 		if (swapBlockPos._1 != -1) {
-			drawList.add(swapBlockPos._1 * Game.TILE_SIZE, swapBlockPos._2 * Game.TILE_SIZE, Game.TILE_SIZE, Game.TILE_SIZE, None, ColorF(0.2f, 0.2f, 1.0f))
+			drawList.add(swapBlockPos._1 * Game.TILE_SIZE, swapBlockPos._2 * Game.TILE_SIZE, Game.TILE_SIZE, Game.TILE_SIZE, Some(swapTexture), ColorF(1.0f, 1.0f, 1.0f))
 		}
 		
 		for (battery <- batteries) {
@@ -96,6 +96,7 @@ class World(val width: Int, val height: Int) {
 
 object World {
 	private lazy val gridTexture = Tex.fromFile("./res/cell.png")
+	private lazy val swapTexture = Tex.fromFile("./res/swap.png")
 	private val GRID_R = 0.5f
 	private val GRID_G = 0.7f
 	private val GRID_B = 1.0f

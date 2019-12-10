@@ -124,16 +124,7 @@ object Game {
 			
 			glClear(GL_COLOR_BUFFER_BIT)
 			
-			if (!gameOver) {
-				player1.update(dt)
-				player2.update(dt)
-				
-				if (Player.moveSpeed < 15.0f) {
-					Player.moveSpeed += dt * 0.3f
-				}
-				
-				world.update(player1, player2, dt)
-				
+			def checkHasLost(): Unit = {
 				if (player1.intersectsTail(player1.pos) || player2.intersectsTail(player1.pos)) {
 					System.out.println("Player 2 Wins!")
 					gameOver = true
@@ -142,6 +133,25 @@ object Game {
 					System.out.println("Player 1 Wins!")
 					gameOver = true
 				}
+			}
+			
+			if (!gameOver) {
+				player1.update(dt)
+				player2.update(dt)
+				
+				do {
+					checkHasLost()
+				} while (player1.move())
+				
+				do {
+					checkHasLost()
+				} while (player2.move())
+				
+				if (Player.moveSpeed < 15.0f) {
+					Player.moveSpeed += dt * 0.3f
+				}
+				
+				world.update(player1, player2, dt)
 			}
 			
 			drawList.begin()
